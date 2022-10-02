@@ -1,0 +1,22 @@
+{% include 'styles.html'   %}
+  <body>
+    <main id="main">
+        <div class="container position-absolute top-50 start-50 translate-middle">
+            <div class="row d-flex justify-content-center">
+                <div class="col-6">
+                    <div class="border p-5 rounded-5">
+                        <form action="" method="post" enctype="multipart/form-data">
+                          <label for="formFileLg" class="form-label">Upload File Excel (.xlsx)</label>
+                          <input class="form-control form-control-lg" id="formFileLg" type="file" name="kinerja">
+                          <div class="d-flex justify-content-center mt-3">
+                            <button class="btn btn-success btn-lg" type="submit">Upload</button>
+                          </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    {% include 'scripts.html'   %}
+  </body>
+</html>
