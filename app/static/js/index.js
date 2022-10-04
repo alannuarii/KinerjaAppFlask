@@ -6,20 +6,20 @@ const input = document.getElementById("formFileLg");
 radio1.addEventListener("click", () => {
   if (radio1.checked) {
     input.name = "unit";
-    console.log(input.name);
+    input.removeAttribute("disabled");
   }
 });
 
 radio2.addEventListener("click", () => {
   if (radio2.checked) {
     input.name = "spesifikasi";
-    console.log(input.name);
+    input.removeAttribute("disabled");
   }
 });
 
 radio3.addEventListener("click", () => {
   if (radio3.checked) {
     input.name = "pengusahaan";
-    console.log(input.name);
+    input.removeAttribute("disabled");
   }
 });
