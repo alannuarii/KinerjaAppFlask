@@ -1,7 +1,9 @@
+import imp
 from app import app
 from flask import render_template, request, redirect
+from app.conn import conn, cur
+from app.kinerja import Kinerja
 import pandas as pd
-import conn
 
 @app.route('/', methods=['GET','POST'])
 def index():
@@ -50,3 +52,11 @@ def index():
             print(error)
 
     return render_template('index.html', title="Input Kinerja")
+
+
+@app.route('/kinerja')
+def kinerja():
+    querystring = request.args.get('spesifikasi_id')
+    querystring2 = request.args.get('periode')
+    data = Kinerja().eaf_bulanan(querystring, querystring2)
+    return data
