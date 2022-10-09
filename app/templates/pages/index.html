@@ -1,0 +1,35 @@
+{% extends 'layouts/base.html' %} {% block content %}
+<main id="main">
+  <div class="container">
+    <div class="main-card row d-flex justify-content-center">
+      <div class="card border p-5 rounded-5 shadow">
+        <div class="card-body">
+          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link {{active_mesin}}" id="pills-mesin-tab" data-bs-toggle="pill" data-bs-target="#pills-mesin" type="button" role="tab" aria-controls="pills-mesin">Kinerja Mesin</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link {{active_unit}}" id="pills-unit-tab" data-bs-toggle="pill" data-bs-target="#pills-unit" type="button" role="tab" aria-controls="pills-unit">Kinerja Unit</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact">Contact</button>
+            </li>
+          </ul>
+          <div class="tab-content pt-2" id="myTabContent">
+            <!-- Awal Tab Mesin -->
+            {% include 'pages/tabs/mesin.html' %}
+            <!-- Akhir Tab Mesin -->
+            <!-- Awal Tab Unit -->
+            {% include 'pages/tabs/unit.html' %}
+            <!-- Akhir Tab Unit -->
+            <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="contact-tab">
+              Saepe animi et soluta ad odit soluta sunt. Nihil quos omnis animi debitis cumque. Accusantium quibusdam perspiciatis qui qui omnis magnam. Officiis accusamus impedit molestias nostrum veniam. Qui amet ipsum iure. Dignissimos
+              fuga tempore dolor.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock %}

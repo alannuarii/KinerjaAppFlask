@@ -1,4 +1,6 @@
 #main {
   width: 100%;
-  height: 100vh;
+}
+.main-card {
+  margin-top: 15px;
 }
