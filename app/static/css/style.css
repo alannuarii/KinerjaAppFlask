@@ -1,6 +1,43 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+label {
+  color: #fff;
+}
+body {
+  background-color: #f4f1de;
+}
 #main {
   width: 100%;
 }
 .main-card {
   margin-top: 15px;
+}
+.card {
+  background-color: #3d405b;
+}
+.nav .active {
+  background-color: #e07a5f !important;
+  color: #fff;
+}
+.nav .active:hover {
+  color: #3d405b;
+}
+.nav button {
+  color: #e07a5f;
+}
+.nav button:hover {
+  color: #fff;
+}
+.btn[type="submit"] {
+  width: 150px;
+  background-color: #81b29a !important;
+  border: #81b29a;
+}
+.btn[type="submit"]:hover {
+  color: #3d405b;
 }

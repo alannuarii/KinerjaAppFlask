@@ -1,6 +1,7 @@
 const radio1 = document.getElementById("flexRadioDefault1");
 const radio2 = document.getElementById("flexRadioDefault2");
 const radio3 = document.getElementById("flexRadioDefault3");
+const radio4 = document.getElementById("flexRadioDefault4");
 const input = document.getElementById("formFileLg");
 
 radio1.addEventListener("click", () => {
@@ -20,6 +21,13 @@ radio2.addEventListener("click", () => {
 radio3.addEventListener("click", () => {
   if (radio3.checked) {
     input.name = "pengusahaan";
+    input.removeAttribute("disabled");
+  }
+});
+
+radio4.addEventListener("click", () => {
+  if (radio4.checked) {
+    input.name = "kalori";
     input.removeAttribute("disabled");
   }
 });

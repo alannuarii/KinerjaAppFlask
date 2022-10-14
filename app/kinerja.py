@@ -1,7 +1,7 @@
 from app.conn import cur
 
 class Kinerja:
-    kpi = ['EAF', 'EFOR', 'SOF', 'CF', 'SdOF', 'PS', 'SFC']
+    kpi = ['EAF', 'EFOR', 'SOF', 'CF', 'SdOF', 'PS', 'SFC', 'NPHR']
     rsh = '(ph - ((po + mo + fo) + sh))'
     total_derating = '(epdh + eudh + esdh)'
     total_ps = '(ps_sentral + ps_trafo)'
@@ -18,38 +18,43 @@ class Kinerja:
         if kpi == 'EAF':
             if key == 'id_mesin':
                 return self.eaf_mesin(id, periode)
-            if key == 'id_unit':
+            elif key == 'id_unit':
                 return self.eaf_unit(id, periode)
         elif kpi == 'EFOR':
             if key == 'id_mesin':
                 return self.efor_mesin(id, periode)
-            if key == 'id_unit':
+            elif key == 'id_unit':
                 return self.efor_unit(id, periode)
         elif kpi == 'SOF':
             if key == 'id_mesin':
                 return self.sof_mesin(id, periode)
-            if key == 'id_unit':
+            elif key == 'id_unit':
                 return self.sof_unit(id, periode)
         elif kpi == 'CF':
             if key == 'id_mesin':
                 return self.cf_mesin(id, periode)
-            if key == 'id_unit':
+            elif key == 'id_unit':
                 return self.cf_unit(id, periode)
         elif kpi == 'SdOF':
             if key == 'id_mesin':
                 return self.sdof_mesin(id, periode)
-            if key == 'id_unit':
+            elif key == 'id_unit':
                 return self.sdof_unit(id, periode)
         elif kpi == 'PS':
             if key == 'id_mesin':
                 return self.ps_mesin(id, periode)
-            if key == 'id_unit':
+            elif key == 'id_unit':
                 return self.ps_unit(id, periode)
         elif kpi == 'SFC':
             if key == 'id_mesin':
                 return self.sfc_mesin(id, periode)
-            if key == 'id_unit':
+            elif key == 'id_unit':
                 return self.sfc_unit(id, periode)
+        elif kpi == 'NPHR':
+            if key == 'id_mesin':
+                return self.nphr_mesin(id, periode)
+            elif key == 'id_unit':
+                return self.nphr_unit(id, periode)
 
     def satuan(self, kpi):
         if kpi in ['EAF', 'EFOR', 'SOF', 'CF', 'PS']:
@@ -58,6 +63,8 @@ class Kinerja:
             return 'Kali'
         elif kpi == 'SFC':
             return 'Liter/kWh'
+        elif kpi == 'NPHR':
+            return 'kCal/kWh'
 
     def get_years(self):
         cur.execute("SELECT DISTINCT(periode) FROM pengusahaan;")
@@ -102,6 +109,10 @@ class Kinerja:
         rumus = '(bbm / produksi)'
         return rumus
 
+    def nphr(self):
+        rumus = '(((batubara * kalori_bb) + (bbm * 0.7 * kalori_bbm) + (bbm * 0.3 * kalori_fame))/ {produksi_netto})'
+        return rumus.format(produksi_netto=self.produksi_netto)
+
     def eaf_mesin(self, spesifikasi_id, periode):
         query = "SELECT {eaf} FROM pengusahaan WHERE spesifikasi_id = {spesifikasi_id} AND periode = '{periode}'"
         cur.execute(query.format(eaf=self.eaf(), spesifikasi_id=spesifikasi_id, periode=periode))
@@ -144,6 +155,12 @@ class Kinerja:
         result = cur.fetchone()
         return result
 
+    def nphr_mesin(self, spesifikasi_id, periode):
+        query = "SELECT {nphr} FROM kalori JOIN pengusahaan ON kalori.pengusahaan_id = pengusahaan.id WHERE spesifikasi_id = {spesifikasi_id} AND periode = '{periode}'"
+        cur.execute(query.format(nphr=self.nphr(), spesifikasi_id=spesifikasi_id, periode=periode))
+        result = cur.fetchone()
+        return result
+
     def eaf_unit(self, unit_id, periode):
         query = "SELECT (SUM({dmn_ph_der}) / SUM({dmn_ph}) * 100) FROM pengusahaan JOIN spesifikasi ON pengusahaan.spesifikasi_id = spesifikasi.id JOIN unit ON spesifikasi.unit_id = unit.id WHERE unit_id = {unit_id} AND periode = '{periode}';"
         cur.execute(query.format(dmn_ph_der=self.dmn_ph_der, dmn_ph=self.dmn_ph, unit_id=unit_id, periode=periode))
@@ -183,6 +200,12 @@ class Kinerja:
     def sfc_unit(self, unit_id, periode):
         query = "SELECT (SUM(bbm) / SUM(produksi)) FROM pengusahaan JOIN spesifikasi ON pengusahaan.spesifikasi_id = spesifikasi.id JOIN unit ON spesifikasi.unit_id = unit.id WHERE unit_id = {unit_id} AND periode = '{periode}';"
         cur.execute(query.format(unit_id=unit_id, periode=periode))
+        result = cur.fetchone()
+        return result
+
+    def nphr_unit(self, unit_id, periode):
+        query = "SELECT (((SUM(batubara) * AVG(kalori_bb)) + (SUM(bbm) * 0.7 * AVG(kalori_bbm)) + (SUM(bbm) * 0.3 * AVG(kalori_fame))) /  (SUM({produksi_netto}))) FROM kalori JOIN pengusahaan ON kalori.pengusahaan_id = pengusahaan.id JOIN spesifikasi ON pengusahaan.spesifikasi_id = spesifikasi.id JOIN unit ON spesifikasi.unit_id = unit.id WHERE unit_id = {unit_id} AND periode = '{periode}';"
+        cur.execute(query.format(produksi_netto=self.produksi_netto, unit_id=unit_id, periode=periode))
         result = cur.fetchone()
         return result
 
